@@ -7,7 +7,7 @@ import java.util.Random;
 public class Matrix implements MatrixInterface {
 
     @Override
-    public List<List<Character>> getFullFrame() {
+    public List<List<String>> getFullFrame() {
         return null;
     }
 

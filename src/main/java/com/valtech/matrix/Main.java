@@ -15,7 +15,7 @@ public class Main {
         matrix.setMatrixDimensions(15, 40);
 
         while(true) {
-            List<List<Character>> fullFrame = matrix.getFullFrame();
+            List<List<String>> fullFrame = matrix.getFullFrame();
             Main.clear();
             Main.print(fullFrame);
             Thread.sleep(200);
@@ -27,12 +27,12 @@ public class Main {
         System.out.flush();
     }
 
-    private static void print(List<List<Character>> fullFrame) {
-        for (List<Character> characters:fullFrame) {
-            StringBuilder builder = new StringBuilder(characters.size());
-            for(Character ch: characters)
+    private static void print(List<List<String>> fullFrame) {
+        for (List<String> strings:fullFrame) {
+            StringBuilder builder = new StringBuilder(strings.size());
+            for(String string: strings)
             {
-                builder.append(ch);
+                builder.append(string);
             }
             System.out.println(builder.toString());
         }
