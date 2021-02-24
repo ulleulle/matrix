@@ -8,7 +8,7 @@ public class Matrix implements MatrixInterface {
 
     @Override
     public List<List<Character>> getFullFrame() {
-
+        return null;
     }
 
     @Override
