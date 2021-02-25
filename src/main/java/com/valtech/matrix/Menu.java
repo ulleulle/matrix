@@ -3,6 +3,13 @@ package com.valtech.matrix;
 import java.util.List;
 
 public class Menu implements SteeringInterface, DisplayInterface {
+
+    private MenuInterface menuInterface;
+
+    public Menu(MenuInterface menuInterface){
+
+        this.menuInterface = menuInterface;
+    }
     @Override
     public void moveLeft() {
 
@@ -25,7 +32,7 @@ public class Menu implements SteeringInterface, DisplayInterface {
 
     @Override
     public void enterPressed() {
-
+        menuInterface.selectedApplication(Racing.class.toString());
     }
 
     @Override

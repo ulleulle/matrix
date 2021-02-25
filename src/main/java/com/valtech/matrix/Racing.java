@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Snake implements DisplayInterface, SteeringInterface {
+public class Racing implements DisplayInterface, SteeringInterface {
 
     List<List<String>> raceTrack = new ArrayList<>();
     Random randomNumber = new Random();
