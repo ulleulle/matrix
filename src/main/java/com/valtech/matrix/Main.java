@@ -16,7 +16,7 @@ public class Main implements NativeKeyListener{
 
     public Main (){
         Menu menu = new Menu();
-        
+
     }
     public static void main(String[] args) throws InterruptedException {
         currentMain = new Main();
@@ -30,6 +30,7 @@ public class Main implements NativeKeyListener{
             System.err.println(ex.getMessage());
             System.exit(1);
         }
+        int i = 0;
         GlobalScreen.addNativeKeyListener(new Main());
         while (true) {
             List<List<String>> fullFrame = matrix.getFullFrame();
