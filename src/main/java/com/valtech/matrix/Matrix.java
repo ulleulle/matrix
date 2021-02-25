@@ -1,12 +1,10 @@
 package com.valtech.matrix;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Matrix implements MatrixInterface {
+public class Matrix implements DisplayInterface {
     Random randomNumber = new Random();
     private int height;
     private int width;

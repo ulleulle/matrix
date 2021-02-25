@@ -1,4 +1,5 @@
 com/valtech/matrix/Main.class
 com/valtech/matrix/Snake.class
 com/valtech/matrix/MatrixInterface.class
+com/valtech/matrix/SteeringInterface.class
 com/valtech/matrix/Matrix.class
