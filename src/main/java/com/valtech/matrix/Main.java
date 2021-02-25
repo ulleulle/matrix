@@ -11,7 +11,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        MatrixInterface matrix = new Matrix();
+        MatrixInterface matrix = new Snake();
         matrix.setMatrixDimensions(15, 40);
 
         while(true) {
