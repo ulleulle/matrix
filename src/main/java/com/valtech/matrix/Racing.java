@@ -22,7 +22,7 @@ public class Racing implements DisplayInterface, SteeringInterface {
     @Override
     public List<List<String>> getFullFrame() {
 
-        if (crashed == true) {
+        if (crashed) {
             List<String> endState = new ArrayList<>();
             endState.add("CRASHED!");
             endState.add(" Try again");
@@ -39,9 +39,6 @@ public class Racing implements DisplayInterface, SteeringInterface {
         return raceTrack;
     }
 
-    private void holdOldCar(int currentPos) {
-        oldPlayerPosition = currentPos;
-    }
 
 
     private String generateLeftBorderSign() {
@@ -95,28 +92,13 @@ public class Racing implements DisplayInterface, SteeringInterface {
             stringList.add(generateClearSpace());
         }
 
-       /* if (raceTrack.size() > 1) {
-            List<String> toRemove = raceTrack.get(raceTrack.size() - 2);
-            if (!toRemove.get(oldPlayerPosition).equals(generatePlayerSign())) {
-                if(!calculateCollision()){
-                    toRemove.add(playerPosition, generatePlayerSign());
-                    toRemove.remove(playerPosition - 1).equals(generateClearSpace());
-                    holdOldCar(playerPosition);
-                }
-
-
-            }
-        }
-
-        */
-
         if (raceTrack.size() > 1) {
             List<String> lastRow = raceTrack.get(raceTrack.size() - 2);
             String s = lastRow.get(playerPosition);
             if (s.equals("*") || s.equals("^") || s.equals("|") || s.equals("!")) {
                 crashed = true;
                 lastRow.remove(playerPosition);
-                lastRow.set(playerPosition, Character. toString((char) 134));
+                lastRow.set(playerPosition, Character.toString((char) 164));
             }else {
                 lastRow.set(playerPosition, generatePlayerSign());
             }

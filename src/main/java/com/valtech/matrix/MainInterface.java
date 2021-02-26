@@ -1,5 +1,5 @@
 package com.valtech.matrix;
 
-public interface MenuInterface {
+public interface MainInterface {
     public void selectedApplication(String selectedApplication);
 }

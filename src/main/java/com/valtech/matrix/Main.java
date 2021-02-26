@@ -8,17 +8,19 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.util.List;
 import java.util.logging.LogManager;
 
-public class Main implements NativeKeyListener, MenuInterface{
+public class Main implements NativeKeyListener, MainInterface {
 
 
+    private static Main main;
     private DisplayInterface currentDisplay;
     private SteeringInterface currentSteering;
 
     public static void main(String[] args) throws InterruptedException {
-        new Main();
+        main = new Main();
+        main.run();
     }
 
-    public Main () throws InterruptedException {
+    public void run() throws InterruptedException{
         Menu menu = new Menu(this);
         setCurrentInterfaces(menu);
 
@@ -35,7 +37,6 @@ public class Main implements NativeKeyListener, MenuInterface{
             System.err.println(ex.getMessage());
             System.exit(1);
         }
-
         GlobalScreen.addNativeKeyListener(this);
     }
 
@@ -52,10 +53,16 @@ public class Main implements NativeKeyListener, MenuInterface{
     public void setCurrentInterfaces(Object object){
         if(object instanceof DisplayInterface) {
             currentDisplay = (DisplayInterface) object;
+            currentDisplay.setMatrixDimensions(15, 40);
+        }else{
+            currentDisplay = null;
         }
-        currentDisplay.setMatrixDimensions(15, 40);
+
         if(object instanceof SteeringInterface) {
             currentSteering = (SteeringInterface) object;
+            currentSteering.method();
+        }else {
+            currentSteering = null;
         }
     }
 
@@ -112,6 +119,9 @@ public class Main implements NativeKeyListener, MenuInterface{
         }
         if(selectedApplication.equals(Matrix.class.toString())){
             setCurrentInterfaces(new Matrix());
+        }
+        if(selectedApplication.equals(Snake.class.toString())){
+            setCurrentInterfaces(new Snake());
         }
     }
 }

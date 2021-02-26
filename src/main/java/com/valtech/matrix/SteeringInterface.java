@@ -15,4 +15,8 @@ public interface SteeringInterface {
 
     boolean isCrashed();
 
+    default void method(){
+        System.out.println("Hi");
+    }
+
 }

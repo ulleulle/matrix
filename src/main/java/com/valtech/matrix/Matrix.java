@@ -19,9 +19,8 @@ public class Matrix implements DisplayInterface {
        return matrix;
     }
 
-
     private String generateRandomSign() {
-        String alphabet = "ABCDEFGHIHAGFEDBJW/&%$%876543";
+        String alphabet = "ABCDEFGHIHAGFEDBJW/&    %$%876543";
 
         int index = randomNumber.nextInt(alphabet.length());
         char randomChar = alphabet.charAt(index);
