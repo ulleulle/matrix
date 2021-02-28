@@ -2,6 +2,7 @@ com/valtech/matrix/Main.class
 com/valtech/matrix/MainInterface.class
 com/valtech/matrix/Racing.class
 com/valtech/matrix/Snake.class
+com/valtech/matrix/TheSnake.class
 com/valtech/matrix/SteeringInterface.class
 com/valtech/matrix/DisplayInterface.class
 com/valtech/matrix/Menu.class

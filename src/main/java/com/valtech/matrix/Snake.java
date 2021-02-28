@@ -7,93 +7,144 @@ import java.util.Random;
 public class Snake implements SteeringInterface, DisplayInterface {
     Random random = new Random();
     boolean crashed = false;
-    boolean appleEaten = false;
+    boolean crashedItself = false;
+    boolean snakeAtApplePos = false;
+    int applePosY = 5;
     int applePosX = 5;
-    int applePosy = 5;
     int height;
     int width;
+    int tailPieces = 0;
     TheSnake theSnake = new TheSnake();
-    int forBack = 10;
-    int upDown = 10;
+    boolean upPressed = false;
+    boolean downPressed = false;
+    boolean rightPressed = false;
+    boolean leftPressed = false;
+
 
     List<List<String>> gameField = new ArrayList();
 
+
     @Override
     public List<List<String>> getFullFrame() {
-        int randomApplePos = random.nextInt(height-2);
+        int randomApplePos = random.nextInt(height - 2);
         boolean appleSet = false;
-        gameField.clear();
-        gameField.add(0, generateLowerBorder());
 
-        for(int i = 0; i < height-5; ++i){
-            gameField.add(1, generateMiddleBorderPiece());
-        }
-        gameField.add(height - 4, generateLowerBorder());
-        if (!appleEaten){
-            gameField.add(applePosX, generateApple());
-        }else if(appleEaten){
-            while ((!appleSet)){
-                if(randomApplePos != 0 && randomApplePos < height -3){
-                    gameField.add(randomApplePos, generateApple());
-                    applePosX = randomApplePos;
-                    appleSet = true;
-                }else {
-                    appleSet = false;
-                    randomApplePos = random.nextInt(height-2);
+
+        if(!crashed && !crashedItself){
+            gameField.clear();
+            gameField.add(0, generateLowerBorder());
+
+            for (int i = 0; i <= height - 5; ++i) {
+                gameField.add(1, generateMiddleBorderPiece());
+            }
+            gameField.add(height - 3, generateLowerBorder());
+
+            if (!snakeAtApplePos) {
+                generateApple();
+            } else if (snakeAtApplePos) {
+                while ((!appleSet)) {
+                    if (randomApplePos != 0 && randomApplePos < height - 3) {
+                        generateApple();
+                        applePosY = randomApplePos;
+                        snakeAtApplePos = false;
+                        appleSet = true;
+                    } else {
+                        appleSet = false;
+                        randomApplePos = random.nextInt(height - 2);
+                    }
                 }
             }
-        }
+            letSnakeRun();
+            generateSnakeHead();
 
-        return gameField;
+            int z;
+            if(theSnake.tailPosY.size() > 0){
+                for(z = 0; z < tailPieces; ++z){
+                    generateSnakeTailPiece(theSnake.tailPosX.get(z), theSnake.tailPosY.get(z));
+                }
+            }
+
+            return gameField;
+        }else {
+            if (crashed) {
+                gameField.clear();
+                List<String> endState = new ArrayList<>();
+                endState.add("That was the wall!");
+                gameField.add(endState);
+                return gameField;
+            }
+            if (crashedItself) {
+                gameField.clear();
+                List<String> endState = new ArrayList<>();
+                endState.add("That was your tail!");
+                gameField.add(endState);
+                return gameField;
+            }
+            return gameField;
+        }
     }
 
 
 
-    private List<String> generateMiddleBorderPiece(){
+    private List<String> generateMiddleBorderPiece() {
         List<String> gameFieldPiece = new ArrayList<>();
         gameFieldPiece.add(0, generateBorderSign());
 
-        for(int i = 0; i < width-3; ++i){
+        for (int i = 0; i < width - 3; ++i) {
             gameFieldPiece.add(generateClearSign());
         }
 
-        gameFieldPiece.add(width-2, generateBorderSign());
+        gameFieldPiece.add(width - 2, generateBorderSign());
         return gameFieldPiece;
     }
 
     private List<String> generateLowerBorder() {
         List<String> upperGameFieldPiece = new ArrayList<>();
-        for(int i = 0; i != width-1; ++i){
+
+        for (int i = 0; i != width - 1; ++i) {
             upperGameFieldPiece.add(generateLowerBorderSign());
         }
         return upperGameFieldPiece;
     }
 
-    private List<String> generateApple(){
-        List<String> pieceWithApple = new ArrayList<>();
-        pieceWithApple.add(0, generateBorderSign());
-        int randomPos = random.nextInt(width-2);
-        boolean appleSet = false;
-        for(int i = 0; i != width-2; ++i){
-            pieceWithApple.add(generateClearSign());
+    private void generateSnakeHead() {
+
+        List<String> addSnake = gameField.get(theSnake.headY);
+
+        String s = addSnake.get(theSnake.headX);
+        if (s.equals(Character.toString((char) 164))) {
+            tailPieces = tailPieces +1;
+            snakeAtApplePos = true;
+
+        }else if(s.equals(generateLowerBorderSign()) || s.equals(generateBorderSign()) || s.equals(generateSnakeTailSign())){
+            crashed = true;
         }
 
-        if(!appleEaten){
-            pieceWithApple.add(applePosy, generateAppleSign());
-        }else if(appleEaten){
-            while ((!appleSet)){
-                if(randomPos != 0){
-                    pieceWithApple.add(randomPos, generateAppleSign());
-                    applePosy = randomPos;
-                    appleSet = true;
-                }else {
-                    appleSet = false;
-                    randomPos = random.nextInt(width-2);
-                }
-            }
+        if (!snakeAtApplePos) {
+            addSnake.set(theSnake.headX, generateSnakeHeadSign());
+        } else {
+            addSnake.set(theSnake.headX, generateSnakeHeadSign());
+            snakeAtApplePos = true;
         }
-        pieceWithApple.add(width-2, generateBorderSign());
-        return pieceWithApple;
+    }
+
+    private void generateSnakeTailPiece(int posX, int posY){
+        List<String> addOneSnakeTailPiece = gameField.get(posY);
+        addOneSnakeTailPiece.set(posX, generateSnakeTailSign());
+
+        List<String> addSnake = gameField.get(theSnake.headY);
+        String s = addSnake.get(theSnake.headX);
+        if(s.equals(generateSnakeTailSign())){
+            crashedItself = true;
+        }
+    }
+
+    private void generateApple() {
+        List<String> pieceWithApple = gameField.get(applePosY);
+
+        if (!snakeAtApplePos) {
+            pieceWithApple.set(applePosX, generateAppleSign());
+        }
     }
 
     private String generateBorderSign() {
@@ -104,8 +155,12 @@ public class Snake implements SteeringInterface, DisplayInterface {
         return "-";
     }
 
-    private String generateSnakeSign() {
+    private String generateSnakeHeadSign() {
         return "M";
+    }
+
+    private String generateSnakeTailSign(){
+        return "m";
     }
 
     private String generateClearSign() {
@@ -116,29 +171,58 @@ public class Snake implements SteeringInterface, DisplayInterface {
         return Character.toString((char) 164);
     }
 
+    private void letSnakeRun(){
+        theSnake.tailPosY.add(0,theSnake.headY);
+        theSnake.tailPosX.add(0,theSnake.headX);
+
+        if(upPressed){
+            theSnake.headY = theSnake.headY - 1;
+        }
+        if(downPressed){
+            theSnake.headY = theSnake.headY + 1;
+        }
+        if(leftPressed){
+            theSnake.headX = theSnake.headX - 1;
+        }
+        if(rightPressed){
+            theSnake.headX = theSnake.headX + 1;
+        }
+    }
+
     @Override
     public void moveLeft() {
-        theSnake.headX = theSnake.headX - 1;
+        upPressed = false;
+        downPressed = false;
+        rightPressed = false;
+        leftPressed = true;
     }
 
     @Override
     public void moveRight() {
-        theSnake.headX = theSnake.headX + 1;
+         upPressed = false;
+         downPressed = false;
+         rightPressed = true;
+         leftPressed = false;
     }
 
     @Override
     public void moveUp() {
-        theSnake.headY = theSnake.headY - 1;
+         upPressed = true;
+         downPressed = false;
+         rightPressed = false;
+         leftPressed = false;
     }
 
     @Override
     public void moveDown() {
-        theSnake.headY = theSnake.headY + 1;
+         upPressed = false;
+         downPressed = true;
+         rightPressed = false;
+         leftPressed = false;
     }
 
     @Override
     public void enterPressed() {
-
     }
 
     @Override

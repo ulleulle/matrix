@@ -95,15 +95,13 @@ public class Racing implements DisplayInterface, SteeringInterface {
         if (raceTrack.size() > 1) {
             List<String> lastRow = raceTrack.get(raceTrack.size() - 2);
             String s = lastRow.get(playerPosition);
-            if (s.equals("*") || s.equals("^") || s.equals("|") || s.equals("!")) {
+            if (s.equals("*") || s.equals("^") || s.equals("|") || s.equals("!") || playerPosition <= lastRow.indexOf(generateLeftBorderSign())|| playerPosition >= lastRow.indexOf(generateRightBorderSign())) {
                 crashed = true;
                 lastRow.remove(playerPosition);
                 lastRow.set(playerPosition, Character.toString((char) 164));
             }else {
                 lastRow.set(playerPosition, generatePlayerSign());
             }
-
-
         }
 
 
